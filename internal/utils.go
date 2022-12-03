@@ -14,7 +14,7 @@ type Day interface {
 	Part2() (string, error)
 }
 
-var Frames = []string{"⡆", "⠇", "⠋", "⠙", "⠸", "⢰", "⣠", "⣄"}
+var frames = []string{"⡆", "⠇", "⠋", "⠙", "⠸", "⢰", "⣠", "⣄"}
 
 // ⠁⠂⠃⠄⠅⠆⠇⡀⡁⡂⡃⡄⡅⡆⡇⠈⠉⠊⠋⠌⠍⠎⠏⡈⡉⡊⡋⡌⡍⡎⡏⠐⠑⠒⠓⠔⠕⠖⠗⡐⡑⡒⡓⡔⡕⡖⡗⠘⠙⠚⠛⠜⠝⠞⠟⡘⡙⡚⡛⡜⡝⡞⡟⠠⠡⠢⠣⠤⠥⠦⠧⡠⡡⡢⡣⡤⡥⡦⡧⠨⠩⠪⠫⠬⠭⠮⠯⡨⡩⡪⡫⡬⡭⡮⡯⠰⠱⠲⠳⠴⠵⠶⠷⡰⡱⡲⡳⡴⡵⡶⡷⠸⠹⠺⠻⠼⠽⠾⠿⡸⡹⡺⡻⡼⡽⡾⡿⢀⢁⢂⢃⢄⢅⢆⢇⣀⣁⣂⣃⣄⣅⣆⣇⢈⢉⢊⢋⢌⢍⢎⢏⣈⣉⣊⣋⣌⣍⣎⣏⢐⢑⢒⢓⢔⢕⢖⢗⣐⣑⣒⣓⣔⣕⣖⣗⢘⢙⢚⢛⢜⢝⢞⢟⣘⣙⣚⣛⣜⣝⣞⣟⢠⢡⢢⢣⢤⢥⢦⢧⣠⣡⣢⣣⣤⣥⣦⣧⢨⢩⢪⢫⢬⢭⢮⢯⣨⣩⣪⣫⣬⣭⣮⣯⢰⢱⢲⢳⢴⢵⢶⢷⣰⣱⣲⣳⣴⣵⣶⣷⢸⢹⢺⢻⢼⢽⢾⢿⣸⣹⣺⣻⣼⣽⣾⣿
 
@@ -79,25 +79,22 @@ func Run(day Day, re_init bool) {
 			}
 		}()
 
-		fmt.Printf("\033[1;33mPart%d: %s\033[0m", part, Frames[currentFrame])
+		fmt.Printf("\033[1;33mPart%d: %s\033[0m", part, frames[currentFrame])
 
-		done := false
+	Execution:
 		for {
 			select {
 			case <-ticker.C:
-				currentFrame = (currentFrame + 1) % 8
-				fmt.Printf("\r\033[1;33mPart%d: %s\033[0m", part, Frames[currentFrame])
+				currentFrame = (currentFrame + 1) % len(frames)
+				fmt.Printf("\r\033[1;33mPart%d: %s\033[0m", part, frames[currentFrame])
 			case ans := <-ansChan:
 				fmt.Printf("\r\033[1;32mPart%d: ✓\033[0m (%s)\n\n", part, time.Since(start))
 				fmt.Println(ans)
-				done = true
+				break Execution
 			case err := <-errChan:
 				fmt.Printf("\r\033[1;31mPart%d: 𐄂\033[0m (%s)\n\n", part, time.Since(start))
 				fmt.Println(err)
-				done = true
-			}
-			if done {
-				break
+				break Execution
 			}
 		}
 		fmt.Println("")

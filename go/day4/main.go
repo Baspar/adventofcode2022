@@ -1,11 +1,10 @@
 package main
 
 import (
-	utils "github.com/baspar/adventofcode2022/internal"
+	. "github.com/baspar/adventofcode2022/internal"
 )
 
-type DayImpl struct {
-}
+type DayImpl struct{}
 
 func (d *DayImpl) Init(lines []string) error {
 	return nil
@@ -18,5 +17,5 @@ func (d *DayImpl) Part2() (string, error) {
 }
 
 func main() {
-	utils.Run(&DayImpl{}, false)
+	Run(&DayImpl{}, false)
 }

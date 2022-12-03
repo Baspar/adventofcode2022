@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	utils "github.com/baspar/adventofcode2022/internal"
+	. "github.com/baspar/adventofcode2022/internal"
 )
 
 type Instruction struct {
@@ -68,5 +68,5 @@ func (d *DayImpl) Part2() (string, error) {
 }
 
 func main() {
-	utils.Run(&DayImpl{}, false)
+	Run(&DayImpl{}, false)
 }
