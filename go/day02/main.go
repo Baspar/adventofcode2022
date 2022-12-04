@@ -15,27 +15,10 @@ func (i Instruction) scoreShape(play int) int {
 	return play + 1
 }
 func (i Instruction) scoreOutcome(play int) int {
-	result := (3 + play - i.opponent) % 3
-	switch result {
-	case 0: // Tie
-		return 3
-	case 1: // Win
-		return 6
-	default: // Lost
-		return 0
-	}
+	return (4 + play - i.opponent) % 3 * 3
 }
 func (i Instruction) playToWin() int {
-	var delta int
-	switch i.objective {
-	case 0: // Lose
-		delta = -1
-	case 1: // Tie
-		delta = 0
-	case 2: // Win
-		delta = 1
-	}
-	return (3 + i.opponent + delta) % 3
+	return (2 + i.opponent + i.objective) % 3
 }
 
 type DayImpl struct {

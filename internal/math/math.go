@@ -1,15 +1,17 @@
 package math
 
-func Min(ns ...int) int {
+import "golang.org/x/exp/constraints"
+
+func Min[T constraints.Ordered](ns ...T) T {
 	min := ns[0]
 	for _, n := range ns {
-		if n < min {
+		if n <= min {
 			min = n
 		}
 	}
 	return min
 }
-func Max(ns ...int) int {
+func Max[T constraints.Ordered](ns ...T) T {
 	max := ns[0]
 	for _, n := range ns {
 		if n > max {
@@ -18,10 +20,10 @@ func Max(ns ...int) int {
 	}
 	return max
 }
-func Extremum(n ...int) (int, int) {
+func Extremum[T constraints.Ordered](n ...T) (T, T) {
 	return Min(n...), Max(n...)
 }
-func Abs(a int) int {
+func Abs[T constraints.Integer](a T) T {
 	if a >= 0 {
 		return a
 	}
