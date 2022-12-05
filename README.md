@@ -14,7 +14,7 @@
 | --                                   | --                                   | --                                   | --                                   | --                                   |
 |                                      |                                      |                                      |                                      |                                      |
 | [  1 ](adventofcode.com/2022/day/1)  | [  2 ](adventofcode.com/2022/day/2)  | [  3 ](adventofcode.com/2022/day/3)  | [  4 ](adventofcode.com/2022/day/4)  | [  5 ](adventofcode.com/2022/day/5)  |
-| [🌟🌟](/go/day1/main.go)             | [🌟🌟](/go/day2/main.go)             | [🌟🌟](/go/day3/main.go)             | [🌟🌟](/go/day4/main.go)             | [____](/go/day5/main.go)             |
+| [🌟🌟](/go/day1/main.go)             | [🌟🌟](/go/day2/main.go)             | [🌟🌟](/go/day3/main.go)             | [🌟🌟](/go/day4/main.go)             | [🌟🌟](/go/day5/main.go)             |
 | [  6 ](adventofcode.com/2022/day/6)  | [  7 ](adventofcode.com/2022/day/7)  | [  8 ](adventofcode.com/2022/day/8)  | [  9 ](adventofcode.com/2022/day/9)  | [ 10 ](adventofcode.com/2022/day/10) |
 | [____](/go/day6/main.go)             | [____](/go/day7/main.go)             | [____](/go/day8/main.go)             | [____](/go/day9/main.go)             | [____](/go/day10/main.go)            |
 | [ 11 ](adventofcode.com/2022/day/11) | [ 12 ](adventofcode.com/2022/day/12) | [ 13 ](adventofcode.com/2022/day/13) | [ 14 ](adventofcode.com/2022/day/14) | [ 15 ](adventofcode.com/2022/day/15) |
