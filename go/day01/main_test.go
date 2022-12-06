@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var input = utils.SanitizeInput(`1000
+var input = `1000
 2000
 3000
 
@@ -20,28 +20,36 @@ var input = utils.SanitizeInput(`1000
 8000
 9000
 
-10000`)
+10000`
+
+var inputs = map[string][2]string{
+	input: {"24000", "45000"},
+}
 
 func TestPart1(t *testing.T) {
 	assert := assert.New(t)
 
-	d := &DayImpl{}
-	d.Init(input)
+	for input, expectedRes := range inputs {
+		d := &DayImpl{}
+		d.Init(utils.SanitizeInput(input))
 
-	res, err := d.Part1()
+		res, err := d.Part1()
 
-	assert.Equal("24000", res)
-	assert.Nil(err)
+		assert.Equal(expectedRes[0], res)
+		assert.Nil(err)
+	}
 }
 
 func TestPart2(t *testing.T) {
 	assert := assert.New(t)
 
-	d := &DayImpl{}
-	d.Init(input)
+	for input, expectedRes := range inputs {
+		d := &DayImpl{}
+		d.Init(utils.SanitizeInput(input))
 
-	res, err := d.Part2()
+		res, err := d.Part2()
 
-	assert.Equal("45000", res)
-	assert.Nil(err)
+		assert.Equal(expectedRes[1], res)
+		assert.Nil(err)
+	}
 }

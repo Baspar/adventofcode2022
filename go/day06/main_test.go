@@ -3,6 +3,8 @@ package main
 import (
 	"testing"
 
+	utils "github.com/baspar/adventofcode2022/internal"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,7 +21,7 @@ func TestPart1(t *testing.T) {
 
 	for input, expectedRes := range inputs {
 		d := &DayImpl{}
-		d.Init([]string{input})
+		d.Init(utils.SanitizeInput(input))
 
 		res, err := d.Part1()
 
@@ -33,7 +35,7 @@ func TestPart2(t *testing.T) {
 
 	for input, expectedRes := range inputs {
 		d := &DayImpl{}
-		d.Init([]string{input})
+		d.Init(utils.SanitizeInput(input))
 
 		res, err := d.Part2()
 
