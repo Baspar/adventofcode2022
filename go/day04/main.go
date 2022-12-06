@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 
 	. "github.com/baspar/adventofcode2022/internal"
 )
@@ -13,21 +11,6 @@ type Assignement struct {
 	to   int
 }
 
-func toAssignement(s string) Assignement {
-	var (
-		from, to int
-		err      error
-	)
-	sections := strings.Split(s, "-")
-	if from, err = strconv.Atoi(sections[0]); err != nil {
-		panic(err)
-	}
-	if to, err = strconv.Atoi(sections[1]); err != nil {
-		panic(err)
-	}
-
-	return Assignement{from, to}
-}
 func (a Assignement) partialOverlapWith(a_ Assignement) bool {
 	return a_.from <= a.from && a.from <= a_.to
 }
@@ -41,8 +24,8 @@ type DayImpl struct {
 
 func (d *DayImpl) Init(lines []string) error {
 	for _, line := range lines {
-		assignments := strings.Split(line, ",")
-		assign1, assign2 := toAssignement(assignments[0]), toAssignement(assignments[1])
+		var assign1, assign2 Assignement
+		fmt.Sscanf(line, "%d-%d,%d-%d", &assign1.from, &assign1.to, &assign2.from, &assign2.to)
 		d.assignments = append(d.assignments, [2]Assignement{assign1, assign2})
 	}
 	return nil
