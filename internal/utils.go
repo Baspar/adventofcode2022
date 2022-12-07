@@ -22,6 +22,56 @@ func SanitizeInput(input string) []string {
 	return strings.Split(strings.Trim(input, "\n"), "\n")
 }
 
+func Pstr(s string) *string {
+	return &s
+}
+
+func Time[T any](title string, dim bool, f func(chan<- T, chan<- error), display func(T) *string) error {
+	var (
+		start time.Time
+		err   error
+		ans   T
+	)
+
+	currentFrame := 0
+	ansChan := make(chan T, 1)
+	errChan := make(chan error, 1)
+	ticker := time.NewTicker(100 * time.Millisecond)
+
+	defer ticker.Stop()
+	defer close(ansChan)
+	defer close(errChan)
+
+	start = time.Now()
+	go f(ansChan, errChan)
+
+	shade := 1
+	if dim {
+		shade = 0
+	}
+
+	fmt.Printf("\033[%d;33m%s: %s\033[0m", shade, title, frames[currentFrame])
+
+	for {
+		select {
+		case <-ticker.C:
+			currentFrame = (currentFrame + 1) % len(frames)
+			fmt.Printf("\r\033[%d;33m%s: %s\033[0m", shade, title, frames[currentFrame])
+			continue
+		case ans = <-ansChan:
+			fmt.Printf("\r\033[%d;32m%s: ✓\033[0m (%s)", shade, title, time.Since(start))
+			if prettyAns := display(ans); prettyAns != nil {
+				fmt.Println("\n\n" + *prettyAns)
+			}
+		case err = <-errChan:
+			fmt.Printf("\r\033[%d;31m%s: 𐄂\033[0m (%s)\n\n", shade, title, time.Since(start))
+			fmt.Println(err)
+		}
+		fmt.Println("")
+		return err
+	}
+}
+
 func Run(day Day, re_init bool) {
 	var (
 		err       error
@@ -51,55 +101,46 @@ func Run(day Day, re_init bool) {
 	fmt.Print("\033[?25l")
 	defer fmt.Print("\033[?25h")
 
-	processPart := func(part int, f func() (string, error), init bool) {
-		var start time.Time
-
+	processPart := func(part int, f func() (string, error), init bool) error {
 		if init {
-			if err = day.Init(lines); err != nil {
-				fmt.Printf("Init failed: %s\n", err)
-				return
+			if err := Time(
+				"Init",
+				true,
+				func(ansChan chan<- bool, errChan chan<- error) {
+					if err = day.Init(lines); err != nil {
+						errChan <- err
+					} else {
+						ansChan <- true
+					}
+				},
+				func(_ bool) *string {
+					return nil
+				},
+			); err != nil {
+				return err
 			}
 		}
 
-		currentFrame := 0
-		ansChan := make(chan string)
-		errChan := make(chan error)
-		ticker := time.NewTicker(100 * time.Millisecond)
-
-		defer ticker.Stop()
-		defer close(ansChan)
-		defer close(errChan)
-
-		go func() {
-			start = time.Now()
-			if ans, err := f(); err != nil {
-				errChan <- err
-			} else {
-				ansChan <- ans
-			}
-		}()
-
-		fmt.Printf("\033[1;33mPart%d: %s\033[0m", part, frames[currentFrame])
-
-	Execution:
-		for {
-			select {
-			case <-ticker.C:
-				currentFrame = (currentFrame + 1) % len(frames)
-				fmt.Printf("\r\033[1;33mPart%d: %s\033[0m", part, frames[currentFrame])
-			case ans := <-ansChan:
-				fmt.Printf("\r\033[1;32mPart%d: ✓\033[0m (%s)\n\n", part, time.Since(start))
-				fmt.Println(ans)
-				break Execution
-			case err := <-errChan:
-				fmt.Printf("\r\033[1;31mPart%d: 𐄂\033[0m (%s)\n\n", part, time.Since(start))
-				fmt.Println(err)
-				break Execution
-			}
-		}
-		fmt.Println("")
+		return Time(
+			fmt.Sprintf("Part%d", part),
+			false,
+			func(ansChan chan<- string, errChan chan<- error) {
+				if ans, err := f(); err != nil {
+					errChan <- err
+				} else {
+					ansChan <- ans
+				}
+			},
+			func(ans string) *string {
+				return &ans
+			},
+		)
 	}
 
-	processPart(1, day.Part1, true)
-	processPart(2, day.Part2, re_init)
+	if processPart(1, day.Part1, true) != nil {
+		return
+	}
+	if processPart(2, day.Part2, re_init) != nil {
+		return
+	}
 }
