@@ -7,10 +7,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var input = ``
+var input = `30373
+25512
+65332
+33549
+35390`
 
 var inputs = map[string][2]string{
-	input: {"", ""},
+	input: {"21", "8"},
 }
 
 func TestPart1(t *testing.T) {
