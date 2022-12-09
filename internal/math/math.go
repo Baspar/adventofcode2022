@@ -29,3 +29,18 @@ func Abs[T constraints.Integer](a T) T {
 	}
 	return -a
 }
+
+// Return:
+// -1 if n in negative,
+// 0 if n = 0,
+// 1 if n is positive
+func Sign[T constraints.Integer](n T) int {
+	switch {
+	case n < 0:
+		return -1
+	case n > 0:
+		return 1
+	default:
+		return 0
+	}
+}
