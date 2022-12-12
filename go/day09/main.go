@@ -35,7 +35,7 @@ type Exploration struct {
 }
 
 func (e *Exploration) Move(direction coords.Coords) {
-	e.rope[0].Add(direction)
+	e.rope[0].AddMut(direction)
 	for knotIndex := 1; knotIndex < len(e.rope); knotIndex++ {
 		e.rope[knotIndex].MoveToward(e.rope[knotIndex-1])
 	}

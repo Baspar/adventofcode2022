@@ -26,7 +26,10 @@ func (c1 Coords) Diff(c2 Coords) Coords {
 func (c1 Coords) Distance(c2 Coords) int {
 	return math.Max(math.Abs(c1[0]-c2[0]), math.Abs(c1[1]-c2[1]))
 }
-func (coords *Coords) Add(c Coords) {
+func (coords *Coords) AddMut(c Coords) {
 	coords[0] += c[0]
 	coords[1] += c[1]
+}
+func (coords *Coords) Add(c Coords) Coords {
+	return Coords{coords[0] + c[0], coords[1] + c[1]}
 }
